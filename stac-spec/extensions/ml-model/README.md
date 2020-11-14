@@ -1,4 +1,5 @@
-# Data cube Extension Specification
+# ML Model Extension Specification
+Copied from the Data Cube Extension for now
 
 - **Title: Data Cube**
 - **Identifier: datacube**
