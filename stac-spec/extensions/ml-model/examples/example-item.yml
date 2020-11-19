@@ -1,0 +1,93 @@
+id: model-name
+version: 1.0.0-beta.2
+description: a model
+properties:
+  title: model-name
+  license:
+    title: MIT
+    description: MIT license
+    href: https://opensource.org/licenses/MIT
+  providers:
+    - name: CoolSat
+      roles:
+        - producer
+        - licensor
+      url: https://cool-sat.com/
+  collection: CS3
+  framework:
+    name: pytorch
+    version: 1.0
+  model:archive:                            # describe the content of the model archive
+    content:
+      - name: index_to_name.json
+        roles:
+        - output mapping
+      - name: signature.json
+        roles:
+        - input signature
+  model:inputs:
+    name: data
+    shape:batch: 1    # batch size
+    shape:channels: 3 # number of channels
+    shape:height: 224 # pixel height
+    shape:width: 224  # pixel width
+    scaling: 0.003921569
+    normalization:
+      mean:
+        - 0.245
+        - 0.34
+        - 0.67
+      std:
+        - 0.1
+        - 0.1
+        - 0.2
+  model:outputs:
+    task:semantic_segmentation:               # describe the task
+      noutputs: 10
+  model:architecture:                         # describe the model architecture
+    parameters: 1034576
+  model:data:                                 # describe the expected data
+    eo:platform: Sentinel-2
+    eo:instruments: OLI
+    eo:gsd: 0.512,
+    eo:process_levels: L1A
+    eo:dtype: uint16
+    eo:bands: 
+      - name: B1
+        common_name: coastal
+        center_wavelength: 0.44
+        full_width_half_max: 0.02
+      - name": B2,
+        common_name: blue,
+        center_wavelength: 0.48
+        full_width_half_max: 0.06
+    json-metadata: # metadata about the test set
+      href: http://cool-sat.com/catalog/CS3-20160503_132130_04/extended-metadata.json
+      title: Extended Metadata,
+      type: application/json,
+      roles: 
+        - metadata
+    catalog: 
+      href: sample-pangeo-cmip6-zarr-stores.csv
+      title: test data catalog
+      description: Path to a the CSV file with the catalog contents
+      type: text/csv
+      roles:
+        - test-data-catalog
+assets:
+  - asset:
+      href: http://cool-sat.com/catalog/datacube-123/data.nc
+      type: application/netcdf
+      title: netCDF Data cube
+      roles: 
+        - metadata
+  - asset:
+      href: http://cool-sat.com/catalog/datacube-123/data.nc
+      type: image/tiff; application=geotiff
+      title: netCDF Data cube
+      roles: 
+        - metadata
+      
+      
+
+
