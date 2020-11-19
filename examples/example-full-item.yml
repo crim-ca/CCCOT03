@@ -18,14 +18,13 @@ properties:
         - producer
         - licensor
       url: https://cool-sat.com/
-  collection: CS3
   sci:doi: 10.5061/dryad.s2v81.2/27.2
   sci:publications:
     - doi: 10.5061/dryad.s2v81.2
       citation: Vega GC, Pertierra LR, Olalla-Tárraga MÁ (2017) Data from: MERRAclim, a high-resolution global dataset of remotely sensed bioclimatic variables for ecological modelling. Dryad Digital Repository.
     - doi: 10.1038/sdata.2017.78
       citation: Vega GC, Pertierra LR, Olalla-Tárraga MÁ (2017) MERRAclim, a high-resolution global dataset of remotely sensed bioclimatic variables for ecological modelling. Scientific Data 4: 170078.
-  engine:                              # describe the execution envirronement
+  engine:                              # describe the execution environment
     name: MXNet
     version: 1.0
     model:handler: mxnet_vision_service:handle
