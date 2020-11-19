@@ -65,8 +65,13 @@ properties:
         - 0.1
         - 0.2
   outputs:
-    task:semantic_segmentation:               # describe the task
-      noutputs: 10
+    task: semantic segmentation               # describe the task
+    noutputs: 4
+    index_to_name:
+      - 0: dontcare
+      - 1: fields
+      - 2: road
+      - 3: building
   architecture:                         # describe the model architecture
     parameters: 1034576
   data:                                 # describe the expected data
@@ -75,6 +80,7 @@ properties:
     eo:gsd: 0.512,
     eo:process_levels: L1A
     eo:dtype: uint16
+    eo:nodata: 0
     eo:bands: 
       - name: B1
         common_name: coastal
