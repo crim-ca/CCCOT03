@@ -3,6 +3,7 @@ version: 1.0.0-beta.2
 description: a model
 properties:
   title: model-name
+  
   license:
     title: MIT
     description: MIT license
@@ -87,7 +88,3 @@ assets:
       title: netCDF Data cube
       roles: 
         - metadata
-      
-      
-
-
