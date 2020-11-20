@@ -1,4 +1,4 @@
-item:version: 1.0.0-beta.2      # schema version
+schema:version: 1.0.0-beta.2      # schema version
 properties:
   name: squeezenet_v1.1         # short name of the model
   description: squeezenet       # short description
@@ -18,15 +18,17 @@ properties:
       url: https://cool-sat.com/
   sci:doi: 10.5061/dryad.s2v81.2/27.2 # doi (optional for the current record)
   sci:publications:                   # relevant publications
+    - arxiv: 0707.0835
+      citation: preprint
     - doi: 10.5061/dryad.s2v81.2
-      citation: Vega GC, Pertierra LR, Olalla-Tárraga MÁ (2017) Data from: MERRAclim, a high-resolution global dataset of remotely sensed bioclimatic variables for ecological modelling. Dryad Digital Repository.
+      citation: Vega GC, Pertierra LR, Olalla-Tárraga MÁ (2017) Data from MERRAclim, a high-resolution global dataset of remotely sensed bioclimatic variables for ecological modelling. Dryad Digital Repository.
     - doi: 10.1038/sdata.2017.78
-      citation: Vega GC, Pertierra LR, Olalla-Tárraga MÁ (2017) MERRAclim, a high-resolution global dataset of remotely sensed bioclimatic variables for ecological modelling. Scientific Data 4: 170078.
+      citation: Vega GC, Pertierra LR, Olalla-Tárraga MÁ (2017) MERRAclim, a high-resolution global dataset of remotely sensed bioclimatic variables for ecological modelling. Scientific Data 4 170078.
   engine:                              # describe the execution environment
     name: MXNet                        # framework
     version: 1.0                       # framework version
     model:handler: mxnet_vision_service:handle
-    model:repo: https://github.com/
+    model:src: https://github.com/
     docker:image: awsdeeplearningteam/multi-model-server:latest # image for the inference
     docker:run:  -itd --name mms -p 80:8080 -p 8081:8081 awsdeeplearningteam/multi-model-server multi-model-server --start --models squeezenet=<archive.mar>
   archive:                            # describe the content of the model archive
