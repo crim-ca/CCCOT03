@@ -1,4 +1,5 @@
 schema:version: 1.0.0-beta.2      # schema version
+collection: a eo model catalog  # name of the model catalog
 properties:
   name: squeezenet_v1.1         # short name of the model
   description: squeezenet       # short description

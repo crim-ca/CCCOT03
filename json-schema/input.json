@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Model input",
+  "description": "Describe the required model input.",
+  "type": "object",
+  "properties": {
+    "input": {
+      "type": "object",
+      "required": [
+        "name",
+        "shape:batch"
+      ],
+      "properties": {
+			"name": {
+			  "title": "name",
+			  "description": "name of the input varaible",
+			  "type": "string"
+			},
+			"shape:batch": {
+			  "title": "shape:batch",
+			  "description": "shape batch size",
+			  "type": "integer"
+			}
+		}
+    }
+  }
+}

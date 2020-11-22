@@ -1,6 +1,5 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://schemas.stacspec.org/v1.0.0-beta.2/item-spec/json-schema/provider.json#",
   "title": "Provider Fields",
   "type": "object",
   "properties": {
@@ -33,7 +32,7 @@
           "url": {
             "title": "Organization homepage",
             "type": "string",
-            "format": "url"
+            "url": "uri"
           }
         }
       }
