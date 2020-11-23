@@ -15,9 +15,6 @@
 					"$ref": "basics.json"
 				},
 				{
-					"$ref": "datetime.json"
-				},
-				{
 					"$ref": "input.json"
 				},
 				{
@@ -46,6 +43,14 @@
 							"description": "Provider item ID (useful for a catalog)",
 							"type": "string"
 						},
+						"properties": {
+							"$ref": "#/definitions/common_metadata"
+						},
+						"collection": {
+							"title": "Collection ID",
+							"description": "The ID of the STAC Collection this Item references to.",
+							"type": "string"
+						},
 						"links": {
 							"title": "Item links",
 							"description": "Links to item relations",
@@ -56,14 +61,6 @@
 						},
 						"assets": {
 							"$ref": "#/definitions/assets"
-						},
-						"properties": {
-							"$ref": "#/definitions/common_metadata"
-						},
-						"collection": {
-							"title": "Collection ID",
-							"description": "The ID of the STAC Collection this Item references to.",
-							"type": "string"
 						}
 					},
 					"required": [

@@ -8,7 +8,10 @@
       "type": "object",
       "required": [
         "name",
-        "shape:batch"
+        "shape:batch",
+        "shape:channels",
+        "shape:height",
+        "shape:width"
       ],
       "properties": {
 			"name": {
@@ -17,9 +20,28 @@
 			  "type": "string"
 			},
 			"shape:batch": {
-			  "title": "shape:batch",
-			  "description": "shape batch size",
-			  "type": "integer"
+			  "title": "batch size",
+			  "description": "tensor batch size",
+			  "type": "integer",
+			  "minimum": 1
+			},
+			"shape:channels": {
+			  "title": "number of channels",
+			  "description": "tensor channel dimension",
+			  "type": "integer",
+			  "minimum": 1
+			},
+			"shape:height": {
+			  "title": "image height",
+			  "description": "tensor image height",
+			  "type": "integer",
+			  "minimum": 1
+			},
+			"shape:width": {
+			  "title": "image width",
+			  "description": "tensor image width",
+			  "type": "integer",
+			  "minimum": 1
 			}
 		}
     }

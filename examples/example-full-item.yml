@@ -1,5 +1,6 @@
 schema:version: 1.0.0-beta.2      # schema version
 collection: a eo model catalog  # name of the model catalog
+id: 11234                       # Some ID for this item
 properties:
   name: squeezenet_v1.1         # short name of the model
   description: squeezenet       # short description
@@ -17,17 +18,17 @@ properties:
         - producer
         - licensor
       url: https://cool-sat.com/
-  sci:doi: 10.5061/dryad.s2v81.2/27.2 # doi (optional for the current record)
+  sci:citation: 10.5061/dryad.s2v81.2/27.2 # proposed model citation (optional for the current record)
   sci:publications:                   # relevant publications
-    - arxiv: 0707.0835
+    - arxiv: 0707.0835                # arxiv preprints dont have doi
       citation: preprint
     - doi: 10.5061/dryad.s2v81.2
       citation: Vega GC, Pertierra LR, Olalla-Tárraga MÁ (2017) Data from MERRAclim, a high-resolution global dataset of remotely sensed bioclimatic variables for ecological modelling. Dryad Digital Repository.
     - doi: 10.1038/sdata.2017.78
       citation: Vega GC, Pertierra LR, Olalla-Tárraga MÁ (2017) MERRAclim, a high-resolution global dataset of remotely sensed bioclimatic variables for ecological modelling. Scientific Data 4 170078.
   engine:                              # describe the execution environment
-    name: MXNet                        # framework
-    version: 1.0                       # framework version
+    name: PyTorch                      # framework
+    version: 1.5                       # framework version
     model:handler: mxnet_vision_service:handle
     model:src: https://github.com/
     docker:image: awsdeeplearningteam/multi-model-server:latest # image for the inference
@@ -80,7 +81,7 @@ properties:
     eo:platform: Sentinel-2
     eo:instruments: OLI
     eo:gsd: 0.512                       # resolution (meters)
-    eo:process_levels: L1A              # processing level (enum)
+    eo:process_level: L1A              # processing level (enum)
     eo:dtype: uint16                    # data type (enum)
     eo:nodata: 0                        # no data flag
     eo:bands: 
