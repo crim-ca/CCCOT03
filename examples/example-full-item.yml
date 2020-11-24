@@ -35,16 +35,15 @@ properties:
       imagename: awsdeeplearningteam/multi-model-server:latest # official image name for the inference
       gpu: true     # we specify if this image needs a gpu or not
       run:  -itd --name mms -p 80:8080 -p 8081:8081 <image> multi-model-server --start --models squeezenet=<archive.mar>
-  archive:                            # describe the content of the model archive
-    content:
+  archive:content:                            # describe the content of the model archive
       - name: index_to_name.json
-        roles:
+        role:
         - output mapping
       - name: signature.json
-        roles:
+        role:
         - input signature
       - name: input_test.tif
-        roles:
+        role:
         - test file
   inputs:             # information about the model input
     name: data        # expected variable name
@@ -54,6 +53,7 @@ properties:
     shape:width: 224  # pixel width
     test_file:        # optional test file included in the archive
       filename: input_test.tif
+      output: output_test.png
       selected_bands:
         - 0
         - 1
@@ -70,7 +70,10 @@ properties:
         - 0.2
   outputs:
     task: semantic segmentation   # describe the task (enum)
-    noutputs: 4                   # number of classes            
+    noutputs: 4                   # number of classes
+    size:                         # size of the output
+      - 224
+      - 224            
     index_to_name:                # mapping to names
       - 0: dontcare
       - 1: fields
@@ -87,25 +90,24 @@ properties:
     eo:dtype: uint16                    # data type (enum)
     eo:nodata: 0                        # no data flag
     eo:bands: 
-      - name: B1
-        common_name: coastal
-        index: 0
-      - name: B2
-        common_name: blue
-        index: 1
-    json-metadata: # metadata about the test set
+      - name: B4
+        common_name: red
+        index: 3
+      - name: B3
+        common_name: green
+        index: 2
+      - name: B5
+        common_name: nir
+        index: 4
+    metadata:
       href: http://cool-sat.com/catalog/CS3-20160503_132130_04/extended-metadata.json
-      title: Extended Metadata,
-      type: application/json,
-      roles: 
-        - metadata
+      title: Extended Metadata
+      type: application/json
     catalog:                            # relevant catalog
       href: sample-pangeo-cmip6-zarr-stores.csv
       title: test data catalog
       description: Path to a the CSV file with the catalog contents
       type: text/csv
-      roles:
-        - test-data-catalog
 assets:
   - asset:
       href: http://cool-sat.com/catalog/datacube-123/data.nc
