@@ -1,12 +1,16 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://schemas.stacspec.org/v1.0.0-beta.2/item-spec/json-schema/basics.json#",
   "title": "Basic Descriptive Fields",
   "type": "object",
   "properties": {
-    "title": {
-      "title": "Item Title",
-      "description": "A human-readable title describing the Item.",
+    "name": {
+      "title": "Model name",
+      "description": "A human-readable name describing the model.",
+      "type": "string"
+    },
+    "version": {
+      "title": "Model version",
+      "description": "Version of the model.",
       "type": "string"
     },
     "description": {
