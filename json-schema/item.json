@@ -67,9 +67,8 @@
 						"dl_item_version",
 						"id",
 						"properties",
-						"assets",
-						"links"
-						
+						"links",
+						"assets"
 					]
 				}
 			]
@@ -101,9 +100,9 @@
 				}
 			},
 			"required": [
-				"title",
 				"href",
-				"rel"
+				"rel",
+				"title"
 			]
 		},
 		"assets": {

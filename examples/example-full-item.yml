@@ -34,6 +34,7 @@ properties:
       dockerfile: # link to the docker file
       imagename: awsdeeplearningteam/multi-model-server:latest # official image name for the inference
       gpu: true     # we specify if this image needs a gpu or not
+      workdir: /home/model  # docker directory  
       run:  -itd --name mms -p 80:8080 -p 8081:8081 <image> multi-model-server --start --models squeezenet=<archive.mar>
   archive:content:                            # describe the content of the model archive
       - name: index_to_name.json
@@ -110,14 +111,14 @@ properties:
       type: text/csv
 assets:
   - asset:
-      href: http://cool-sat.com/catalog/datacube-123/data.nc
+      href: https://torchserve.pytorch.org/mar_files/alexnet.mar
       type: application/zip
       title: model archive
-      roles: 
-        - model_artefact
+      role: 
+        - model artefact
   - asset:
-      href: http://cool-sat.com/catalog/datacube-123/data.nc
+      href: https://storage.googleapis.com/pdd-stac/disasters/hurricane-harvey/0831/20170831_172754_101c_3b_Visual.tif
       type: image/tiff; application=geotiff
-      title: netCDF Data cube
-      roles: 
-        - metadata
+      title: Sample image
+      role: 
+        - data
