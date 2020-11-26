@@ -3,7 +3,9 @@ collection: a eo model catalog  # name of the model catalog
 id: 11234                       # Some ID for this item
 properties:
   name: resnet18+unet_scse         # short name of the model
-  description: UNet architecture with a resnet18 backbone       # short description
+  description: >-                  # short description
+    UNet architecture with a resnet18 backbone and a SCSE layer
+    fine-tuned on Pleiade imagery        
   version: 1.0                  # model version
   publisher:                    # information about the publisher
     author: CRIM team
@@ -13,23 +15,30 @@ properties:
     description: MIT license
     href: https://github.com/nyoki-mtl/pytorch-segmentation/blob/master/LICENSE
   providers:                    # provider information (data, etc.)
-    - name: Effigis
+    - name: Effigis Inc.
       roles:
-        - licensor
-      url: https://cool-sat.com/
+        - image licensor
+      url: https://effigis.com/en/
+    - name: Airbus Inc.
+      roles:
+        - image provider
+      url: https://www.intelligence-airbusds.com/ 
   sci:publications:                   # relevant publications
-    - citation: Abhijit Guha Roy and Nassir Navab and Christian Wachinger (2018). Concurrent Spatial and Channel Squeeze & Excitation in Fully Convolutional Networks, arXiv:1803.02579
+    - citation: >-
+      Abhijit Guha Roy and Nassir Navab and Christian Wachinger (2018). 
+      Concurrent Spatial and Channel Squeeze & Excitation in Fully Convolutional Networks, 
+      arXiv:1803.02579
   engine:                              # describe the execution environment
     framework: PyTorch                 # framework used
     version: 1.5                       # framework version
     model:handler: thelper.cli.inference_session
     model:src: https://github.com/crim-ca/geoimagenet
     docker:
-      dockerfile: https://github.com/crim-ca/CCCOT03/blob/main/docker/Dockerfile # link to the docker file
+      dockerfile: https://github.com/crim-ca/CCCOT03/blob/main/docker/thelper-geo.dockerfile # link to the docker file
       imagename: thelper-geo:latest # official image name for the inference
       gpu: true     # we specify if this image needs a gpu or not
       workdir: /workspace  # docker directory  
-      run:  thelper infer --config <config_path> --save-dir <out> --ckpt-path <ckpt_path>
+      run:  thelper infer --config /workspace/config.yml --save-dir /workspace --ckpt-path /workspace/ckpt.best.pth
   archive:content:                            # describe the content of the model archive
       - name: index_to_name.json
         role:
@@ -37,9 +46,12 @@ properties:
       - name: config.yml
         role:
         - configuration file
-      - name: input_test.tif
+      - name: ./test_pleiade/256/input_test.tif
         role:
-        - test file
+        - test data
+      - name: ckpt.best.pth
+        role:
+        - checkpoint file
   inputs:             # information about the model input
     name: data        # expected variable name
     shape:batch: 1    # batch size
