@@ -45,7 +45,7 @@
                     "dockerfile": {
                         "title": "dockerfile",
                         "description": "Link to a dockerfile",
-                        "type": "uri"
+                        "type": "string"
                     },
                     "imagename": {
                         "title": "Image name",

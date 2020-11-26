@@ -1,0 +1,118 @@
+schema:version: 0.1-alpha       # schema version
+collection: a eo model catalog  # name of the model catalog
+id: 11234                       # Some ID for this item
+properties:
+  name: resnet18+unet_scse         # short name of the model
+  description: UNet architecture with a resnet18 backbone       # short description
+  version: 1.0                  # model version
+  publisher:                    # information about the publisher
+    author: CRIM team
+    email: samuel.foucher@crim.ca
+  license:                      # license of utilisation
+    title: MIT
+    description: MIT license
+    href: https://github.com/nyoki-mtl/pytorch-segmentation/blob/master/LICENSE
+  providers:                    # provider information (data, etc.)
+    - name: Effigis
+      roles:
+        - licensor
+      url: https://cool-sat.com/
+  sci:publications:                   # relevant publications
+    - citation: Abhijit Guha Roy and Nassir Navab and Christian Wachinger (2018). Concurrent Spatial and Channel Squeeze & Excitation in Fully Convolutional Networks, arXiv:1803.02579
+  engine:                              # describe the execution environment
+    framework: PyTorch                 # framework used
+    version: 1.5                       # framework version
+    model:handler: thelper.cli.inference_session
+    model:src: https://github.com/crim-ca/geoimagenet
+    docker:
+      dockerfile: https://github.com/crim-ca/CCCOT03/blob/main/docker/Dockerfile # link to the docker file
+      imagename: thelper-geo:latest # official image name for the inference
+      gpu: true     # we specify if this image needs a gpu or not
+      workdir: /workspace  # docker directory  
+      run:  thelper infer --config <config_path> --save-dir <out> --ckpt-path <ckpt_path>
+  archive:content:                            # describe the content of the model archive
+      - name: index_to_name.json
+        role:
+        - output mapping
+      - name: config.yml
+        role:
+        - configuration file
+      - name: input_test.tif
+        role:
+        - test file
+  inputs:             # information about the model input
+    name: data        # expected variable name
+    shape:batch: 1    # batch size
+    shape:channels: 3 # number of channels
+    shape:height: 224 # pixel height
+    shape:width: 224  # pixel width
+    test_file:        # optional test file included in the archive
+      filename: input_test.tif
+      output: output_test.png
+      selected_bands:
+        - 0
+        - 1
+        - 3
+    scaling: 0.003921569  # scaling factor (usually 1/255)
+    normalization:        # input statistical normalization
+      mean:
+        - 0.245
+        - 0.34
+        - 0.67
+      std:
+        - 0.1
+        - 0.1
+        - 0.2
+  outputs:
+    task: semantic segmentation   # describe the task (enum)
+    noutputs: 4                   # number of classes
+    size:                         # size of the output
+      - 224
+      - 224            
+    index_to_name:                # mapping to names
+      - 0: dontcare
+      - 1: fields
+      - 2: road
+      - 3: building
+  architecture:                         # describe the model architecture
+    parameters: 1034576                 # total number of parameters
+    type: resnet                        # type of architecture (enum)
+  data:                                 # describe the expected data
+    eo:platform: Pleiades
+    eo:instruments: OLI
+    eo:gsd: 0.5                       # resolution (meters)
+    eo:process_level: L3              # processing level (enum)
+    eo:dtype: uint16                    # data type (enum)
+    eo:nodata: 0                        # no data flag
+    eo:bands: 
+      - name: B4
+        common_name: red
+        index: 3
+      - name: B3
+        common_name: green
+        index: 2
+      - name: B5
+        common_name: nir
+        index: 4
+    metadata:
+      href: http://cool-sat.com/catalog/CS3-20160503_132130_04/extended-metadata.json
+      title: Extended Metadata
+      type: application/json
+    catalog:                            # relevant catalog
+      href: sample-pangeo-cmip6-zarr-stores.csv
+      title: test data catalog
+      description: Path to a the CSV file with the catalog contents
+      type: text/csv
+assets:
+  - asset:
+      href: https://torchserve.pytorch.org/mar_files/alexnet.mar
+      type: application/zip
+      title: model archive
+      role: 
+        - model artefact
+  - asset:
+      href: https://storage.googleapis.com/pdd-stac/disasters/hurricane-harvey/0831/20170831_172754_101c_3b_Visual.tif
+      type: image/tiff; application=geotiff
+      title: Sample image
+      role: 
+        - data
