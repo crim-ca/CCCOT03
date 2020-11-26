@@ -1,0 +1,32 @@
+datasets:
+  test_pleiade:
+    type: "thelper.data.geo.parsers.ImageFolderGDataset"
+    params:
+      root: "/workspace/test_pleiade"
+      channels: [1, 2, 3, 4]
+      image_key: 'data'
+runner:
+  type: "thelper.infer.ImageSegmTester"
+loaders:
+  shuffle: false
+  workers: 4
+  test_split:
+    test_pleiade: 1
+  base_transforms:
+    - operation: "thelper.transforms.SelectChannels"
+      params:
+        channels: [0, 1, 2]
+    - operation: "thelper.transforms.CenterCrop"
+      params:
+        size: 128
+    - operation: "thelper.transforms.NormalizeMinMax"
+      params:
+        min: 0.0
+        max: 255.0
+    - operation: "thelper.transforms.NormalizeZeroMeanUnitVar"
+      params:
+        mean: [0.485, 0.456, 0.406]
+        std: [0.229, 0.224, 0.225]
+    - operation: "thelper.transforms.Transpose"
+      params:
+        axes: [2,0,1]
