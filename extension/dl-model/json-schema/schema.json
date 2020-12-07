@@ -11,6 +11,15 @@
 		},
 		{
 		  "$ref": "https://schemas.stacspec.org/v1.0.0-beta.2/item-spec/json-schema/instrument.json"
+		},
+		{
+		  "$ref": "https://schemas.stacspec.org/v1.0.0-beta.2/item-spec/json-schema/licensing.json"
+		},
+		{
+		  "$ref": "https://schemas.stacspec.org/v1.0.0-beta.2/item-spec/json-schema/provider.json"
+		},
+		{
+		  "$ref": "https://schemas.stacspec.org/v1.0.0-beta.2/item-spec/json-schema/datetime.json"
 		}
 	],
 	"definitions": {
@@ -25,39 +34,77 @@
 					"type": "array",
 					"contains": {
 						"enum": [
-							"dl-model"
+							"dl-model",
+							"https://example.com/dl-model/1.0/schema.json"
 						]
 					}
 				},
 				"properties": {
 					"type": "object",
 					"required": [
-						"stac_extensions",
-						"properties"
+						"dlm:engine",
+						"dlm:inputs",
+						"dlm:archive",
+						"dlm:data"
 					],
 					"properties": {
-						"sat:relative_orbit": {
-							"type": "integer",
-							"minimum": 1
+						"dlm:engine": {
+							"title": "Execution environement",
+							"type": "object",
+							"required": [
+								"framework",
+								"version",
+								"docker"
+							],
+							"properties": {
+								"framework": {
+									"title": "Orbit State",
+									"type": "string"
+								},
+								"version": {
+									"title": "Version du framework",
+									"type": "string"
+								},
+								"model:handler": {
+									"title": "Handling function",
+									"type": "string"
+								},
+								"model:hash": {
+									"title": "Model source repository",
+									"type": "string"
+								},
+								"docker": {
+									"title": "Docker container specifications",
+									"type": "object",
+									"properties": {
+										"dockerfile:url": {
+											"title": "Docker file url",
+											"type": "string"
+										}
+									}
+								}
+							}	
 						},
-						"sat:orbit_state": {
+						"dlm:architecture": {
+							"title": "Model architecture description",
+							"type": "object"
+						},
+						"dlm:inputs": {
+							"title": "Description of the input tensor",
+							"type": "object"
+							
+						},
+						"dlm:data": {
 							"title": "Orbit State",
-							"type": "string",
-							"enum": [
-								"ascending",
-								"descending",
-								"geostationary"
-							]
+							"type": "object"
+							
+						},
+						"dlm:archive": {
+							"title": "Orbit State",
+							"type": "object"
+							
 						}
 					}
-				},
-				"engine": {
-					"type": "object"
-					
-				},
-				"engine": {
-					"type": "object"
-					
 				}
 			}
 		}

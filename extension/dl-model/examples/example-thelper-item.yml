@@ -1,19 +1,40 @@
-schema:version: 0.1-alpha       # schema version
+stac_version: 1.0.0-beta.2      # schema version
+stac_extensions:  # stac exension required
+  - dl-model
+  - eo
+  - scientific
+  - provider
+id: 11234         # Some ID for this item
+type: Feature     # Required by STAC item
+geometry:         # Required by STAC item
+  type: Polygon
+  coordinates:
+    - - - 180.0
+        - 90.0
+      - - -180.0
+        - -90
+      - - -180.0
+        - 90.0
+      - - 180.0
+        - 90.0
+      - - 180.0
+        - -90.0
+bbox:             # Required by STAC item
+  - -180.0
+  - -90.0
+  - 180.0
+  - 90 
 collection: a eo model catalog  # name of the model catalog
-id: 11234                       # Some ID for this item
 properties:
-  name: resnet18+unet_scse         # short name of the model
+  title: resnet18+unet_scse         # short name of the model
   description: >-                  # short description
     UNet architecture with a resnet18 backbone and a SCSE layer
     fine-tuned on Pleiade imagery        
-  version: 1.0                  # model version
-  publisher:                    # information about the publisher
+  dlm:version: 1.0                  # model version
+  dlm:publisher:                    # information about the publisher
     author: CRIM team
     email: samuel.foucher@crim.ca
-  license:                      # license of utilisation
-    title: MIT
-    description: MIT license
-    href: https://github.com/nyoki-mtl/pytorch-segmentation/blob/master/LICENSE
+  license: MIT                      # license of utilisation
   providers:                    # provider information (data, etc.)
     - name: Effigis Inc.
       roles:
@@ -28,7 +49,7 @@ properties:
       Abhijit Guha Roy and Nassir Navab and Christian Wachinger (2018). 
       Concurrent Spatial and Channel Squeeze & Excitation in Fully Convolutional Networks, 
       arXiv:1803.02579
-  engine:                              # describe the execution environment
+  dlm:engine:                              # describe the execution environment
     framework: PyTorch                 # framework used
     version: 1.5                       # framework version
     model:handler: thelper.cli.inference_session
@@ -39,7 +60,7 @@ properties:
       gpu: true     # we specify if this image needs a gpu or not
       workdir: /workspace  # docker directory  
       run:  thelper infer --config /workspace/config.yml --save-dir /workspace --ckpt-path /workspace/ckpt.best.pth
-  archive:content:                            # describe the content of the model archive
+  dlm:archive:                            # describe the content of the model archive
       - name: index_to_name.json
         role:
         - output mapping
@@ -52,7 +73,7 @@ properties:
       - name: ckpt.best.pth
         role:
         - checkpoint file
-  inputs:             # information about the model input
+  dlm:inputs:             # information about the model input
     name: data        # expected variable name
     shape:batch: 1    # batch size
     shape:channels: 3 # number of channels
@@ -75,7 +96,7 @@ properties:
         - 0.1
         - 0.1
         - 0.2
-  outputs:
+  dlm:outputs:
     task: semantic segmentation   # describe the task (enum)
     noutputs: 4                   # number of classes
     size:                         # size of the output
@@ -86,16 +107,16 @@ properties:
       - 1: fields
       - 2: road
       - 3: building
-  architecture:                         # describe the model architecture
+  dlm:architecture:                         # describe the model architecture
     parameters: 1034576                 # total number of parameters
     type: resnet                        # type of architecture (enum)
-  data:                                 # describe the expected data
+  dlm:data:                                 # describe the expected data
     eo:platform: Pleiades
     eo:instruments: OLI
     eo:gsd: 0.5                       # resolution (meters)
-    eo:process_level: L3              # processing level (enum)
-    eo:dtype: uint16                    # data type (enum)
-    eo:nodata: 0                        # no data flag
+    dlm:process_level: L3              # processing level (enum)
+    dlm:dtype: uint16                    # data type (enum)
+    dlm:nodata: 0                        # no data flag
     eo:bands: 
       - name: B4
         common_name: red
