@@ -32,7 +32,7 @@ properties:
     framework: PyTorch                 # framework used
     version: 1.5                       # framework version
     model:handler: thelper.cli.inference_session
-    model:src: https://github.com/crim-ca/geoimagenet
+    model:src: https://github.com/crim-ca/gin-model-repo
     docker:
       dockerfile: https://github.com/crim-ca/CCCOT03/blob/main/docker/thelper-geo.dockerfile # link to the docker file
       imagename: thelper-geo:latest # official image name for the inference
