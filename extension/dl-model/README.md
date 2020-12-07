@@ -1,10 +1,10 @@
 This is simply a copy of the eo extension for now, to be modified later.
 
-# Electro-Optical Extension Specification
+# Deep Learning Model Extension Specification
 
-- **Title: Electro-Optical**
-- **Identifier: eo**
-- **Field Name Prefix: eo**
+- **Title: Deep Learning Model**
+- **Identifier: dl-model**
+- **Field Name Prefix: none**
 - **Scope: Item**
 - **Extension [Maturity Classification](../README.md#extension-maturity): Proposal**
 
