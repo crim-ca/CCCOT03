@@ -58,27 +58,52 @@
 							],
 							"properties": {
 								"framework": {
-									"title": "Orbit State",
+									"title": "Name of the deep learning used",
 									"type": "string"
 								},
 								"version": {
 									"title": "Version du framework",
 									"type": "string"
 								},
-								"model:handler": {
-									"title": "Handling function",
+								"model_handler": {
+									"title": "Model handling function",
 									"type": "string"
 								},
-								"model:hash": {
+								"model_src_url": {
 									"title": "Model source repository",
+									"type": "string"
+								},
+								"model_src_hash": {
+									"title": "Hash value for the Model source",
 									"type": "string"
 								},
 								"docker": {
 									"title": "Docker container specifications",
 									"type": "object",
 									"properties": {
-										"dockerfile:url": {
+										"docker_file": {
 											"title": "Docker file url",
+											"type": "string"
+										},
+										"gpu": {
+											"title": "Docker image requires a gpu",
+											"type": "boolean"
+										},
+
+										"image_name": {
+											"title": "Docker image name",
+											"type": "string"
+										},
+										"tag": {
+											"title": "Docker image tag",
+											"type": "string"
+										},
+										"working_dir": {
+											"title": "Docker container working dir",
+											"type": "string"
+										},
+										"run": {
+											"title": "Docker run parameters",
 											"type": "string"
 										}
 									}
@@ -87,7 +112,29 @@
 						},
 						"dlm:architecture": {
 							"title": "Model architecture description",
-							"type": "object"
+							"type": "object",
+							"required": [
+								"nb_parameters"
+							],
+							"properties": {
+								"nb_parameters": {
+									"title": "Total number of parameters in the model",
+									"type": "number"
+								},
+								"type": {
+									"title": "Type of architecture",
+									"type": "string"
+								},
+								"summary": {
+									"title": "Summary of the architecture",
+									"type": "string"
+								},
+								"pretrained": {
+									"title": "Pre-training",
+									"type": "string"
+								}
+							}	
+							
 						},
 						"dlm:inputs": {
 							"title": "Description of the input tensor",
