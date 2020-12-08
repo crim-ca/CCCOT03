@@ -44,12 +44,14 @@
 					"required": [
 						"dlm:engine",
 						"dlm:inputs",
+						"dlm:outputs",
 						"dlm:archive",
 						"dlm:data"
 					],
 					"properties": {
 						"dlm:engine": {
 							"title": "Execution environement",
+							"description": "Describe the execution environement",
 							"type": "object",
 							"required": [
 								"framework",
@@ -112,6 +114,7 @@
 						},
 						"dlm:architecture": {
 							"title": "Model architecture description",
+							"description": "Describe the model architecture",
 							"type": "object",
 							"required": [
 								"nb_parameters"
@@ -137,17 +140,25 @@
 						},
 						"dlm:inputs": {
 							"title": "Description of the input tensor",
-							"type": "object"
+							"type": "object",
+							"description": "Describe the inputs required by the model"
+							
+						},
+						"dlm:outputs": {
+							"title": "Description of the outputs of the model",
+							"type": "object",
+							"description": "Describe the outputs of the model"
 							
 						},
 						"dlm:data": {
 							"title": "Description of the data",
-							"type": "object"
-							
+							"type": "object",
+							"description": "Describe the data compatible with the model"
 						},
 						"dlm:archive": {
 							"title": "Description of the archive content",
-							"type": "object"
+							"type": "object",
+							"description": "Describe the model archive content"
 							
 						}
 					}
