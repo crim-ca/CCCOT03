@@ -134,7 +134,6 @@
 									"type": "string"
 								}
 							}	
-							
 						},
 						"dlm:inputs": {
 							"title": "Description of the input tensor",
@@ -142,12 +141,12 @@
 							
 						},
 						"dlm:data": {
-							"title": "Orbit State",
+							"title": "Description of the data",
 							"type": "object"
 							
 						},
 						"dlm:archive": {
-							"title": "Orbit State",
+							"title": "Description of the archive content",
 							"type": "object"
 							
 						}
