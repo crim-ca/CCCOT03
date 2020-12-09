@@ -1,7 +1,5 @@
-# Usage:
-# docker run --rm -it --gpus all --mount type=bind,source=/home/sfoucher/DEV/CCCOT03/model_store,target=/workspace -p 8080:8080 thelper-geo:base bash
 FROM nvidia/cuda:10.0-cudnn7-devel-ubuntu16.04
-LABEL name="thelper"
+LABEL name="GDL"
 LABEL description="Training framework and CLI for PyTorch-based machine learning projects"
 LABEL vendor="Centre de Recherche Informatique de Montréal / Computer Research Institute of Montreal (CRIM)"
 LABEL version="0.6.2"
@@ -20,24 +18,22 @@ RUN curl -o ~/miniconda.sh -LO  https://repo.continuum.io/miniconda/Miniconda3-l
     ${CONDA_HOME}/bin/conda install -y python=$PYTHON_VERSION
 
 ENV PROJ_LIB ${CONDA_HOME}/share/proj
-ENV THELPER_HOME /opt/thelper
-WORKDIR ${THELPER_HOME}
+ENV GDL_HOME /opt/GDL
+WORKDIR ${GDL_HOME}
 
 # NOTE:
 #  force full reinstall with *possibly* updated even if just changing source
 #  this way we make sure that it works with any recent dependency update
 #COPY . .
-RUN git clone -b infer-config https://github.com/plstcharles/thelper ${THELPER_HOME}
+RUN git clone https://github.com/NRCan/geo-deep-learning ${GDL_HOME}
 
-RUN sed -i 's/thelper/base/g' conda-env.yml
-RUN conda env update --file conda-env.yml \
-    && pip install opencv-python-headless \
+RUN conda install -c conda-forge ruamel_yaml h5py fiona rasterio geopandas scikit-image scikit-learn tqdm \
+    && conda install -c fastai nvidia-ml-py3 \
+    && pip install mlflow \
     && conda clean --all -f -y
-RUN pip install -q -e . --no-deps
 
-# override base thelper
-LABEL name="thelper-geo"
-LABEL description.geo="Adds geospatial related packages to run machine learning projects with geo-referenced imagery"
+# RUN pip install -q -e . --no-deps # no setup for GDL
+
 
 # fix logged warning from GDAL sub-package when accessing Sentinel data via SAFE.ZIP
 #   only problematic here when using the 'root' conda env
@@ -45,19 +41,9 @@ LABEL description.geo="Adds geospatial related packages to run machine learning 
 # (https://github.com/conda-forge/gdal-feedstock/issues/83#issue-162911573)
 ENV CPL_ZIP_ENCODING=UTF-8
 
-# everything already configured/copied by base thelper
-# don't change directory to remain on specified workdir in base image
-# only add extra geo packages
-RUN sed -i 's/thelper/base/g' ${THELPER_HOME}/conda-env-geo.yml
-RUN conda env update --file ${THELPER_HOME}/conda-env-geo.yml \
-    && conda clean --all -f -y
-
 WORKDIR /workspace
 RUN chmod -R a+w /workspace
 
-# Model installation
-RUN git clone https://github.com/crim-ca/gin-model-repo ginmodelrepo-src
-RUN pip install --quiet ./ginmodelrepo-src
 
 # set default command
 # NOTE:
@@ -68,5 +54,5 @@ RUN pip install --quiet ./ginmodelrepo-src
 #       vs:
 #           entrypoint:     docker run [options] --entrypoint="" <your-cmd-override>
 #           # without "" override, Dockerfile entrypoint is executed and override command is completly ignored
-CMD ["python", "-m", "thelper"]
+CMD ["python", "-m", "inference.py"]
 
