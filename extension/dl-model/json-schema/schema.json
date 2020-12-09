@@ -27,7 +27,8 @@
 			"type": "object",
 			"required": [
 				"stac_extensions",
-				"properties"
+				"properties",
+				"assets"
 			],
 			"properties": {
 				"stac_extensions": {
