@@ -150,6 +150,7 @@
 								"scaling_factor",
 								"normalization:mean",
 								"normalization:std",
+								"selected_bands",
 								"shape"
 							],
 							"properties": {
@@ -159,6 +160,7 @@
 								},
 								"scaling_factor": {
 									"title": "Scaling factor",
+									"description": "Scaling factor to be applied on the data in order to bring the dynamic between 0 and 1",
 									"type": "number",
 									"exclusiveMinimum": 0
 								},
@@ -178,6 +180,14 @@
 										"type": "number",
 										"exclusiveMinimum": 0
       								}
+								},
+								"selected_bands": {
+									"title": "Selected bands",
+									"type": "array",
+									"minItems": 1,
+									"items": {
+										"type": "integer"
+									}
 								},
 								"shape": {
 									"title": "Shape of the input tensor",
@@ -211,38 +221,8 @@
 											"minimum": 1
 										}
 									}
-								},
-								"test_file": {
-									"title": "Test file",
-									"type": "object",
-									"description": "this test file is a saved tensor",
-									"required": [
-										"batch",
-										"dim",
-										"height",
-										"width"
-									],
-									"properties": {
-										"filename": {
-											"title": "Batch size",
-											"type": "integer",
-											"minimum": 1
-										},
-										"output": {
-											"title": "Number of channels",
-											"type": "integer",
-											"minimum": 1
-										},
-										"selected_bands": {
-											"title": "Selected bands",
-											"type": "array",
-											"minItems": 1,
-											"items": {
-												"type": "integer"
-											}
-										}
-									}
 								}
+								
 							}	
 						},
 						"dlm:outputs": {
@@ -316,7 +296,7 @@
 						"dlm:data": {
 							"title": "Description of the data requirements",
 							"type": "object",
-							"description": "Describe the data compatible with the model",
+							"description": "Describe the eo data compatible with the model",
 							"required": [
 								"process_level",
 								"dtype",
@@ -326,7 +306,7 @@
 							"properties": {
 								"process_ level": {
 									"title": "Data processing level",
-									"description": "Describe the data compatible with the model",
+									"description": "Describe the processing level expected",
 									"type": "string",
 									"enum": [
 										"raw",
@@ -401,6 +381,29 @@
 										"float96",
 										"float128"
 									]
+								},
+								"test_file": {
+									"title": "Test file",
+									"type": "object",
+									"description": "this test file is a data sample",
+									"required": [
+										"filename",
+										"dim",
+										"height",
+										"width"
+									],
+									"properties": {
+										"filename": {
+											"title": "Test filename",
+											"type": "string",
+											"minimum": 1
+										},
+										"output": {
+											"title": "Number of channels",
+											"type": "integer",
+											"minimum": 1
+										}
+									}
 								}
 							}
 						},
