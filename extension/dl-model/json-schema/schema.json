@@ -1,25 +1,26 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schemas.stacspec.org/v1.0.0-beta.2/extensions/deep_learning_model/json-schema/schema.json#",
 	"title": "DL Model Item",
-	"description": "This object represents the metadata for a DL model item in a DL Catalog.",
+	"description": "This object represents the metadata for a Deep Learning (DL) model item in a DL Catalog.",
 	"allOf": [
 		{
-		  "$ref": "https://schemas.stacspec.org/v1.0.0-beta.2/item-spec/json-schema/item.json"
+		  "$ref": "../../../item-spec/json-schema/item.json"
 		},
 		{
 		  "$ref": "#/definitions/dl-model"
 		},
 		{
-		  "$ref": "https://schemas.stacspec.org/v1.0.0-beta.2/item-spec/json-schema/instrument.json"
+		  "$ref": "../../../item-spec/json-schema/instrument.json"
 		},
 		{
-		  "$ref": "https://schemas.stacspec.org/v1.0.0-beta.2/item-spec/json-schema/licensing.json"
+		  "$ref": "../../../item-spec/json-schema/licensing.json"
 		},
 		{
-		  "$ref": "https://schemas.stacspec.org/v1.0.0-beta.2/item-spec/json-schema/provider.json"
+		  "$ref": "../../../item-spec/json-schema/provider.json"
 		},
 		{
-		  "$ref": "https://schemas.stacspec.org/v1.0.0-beta.2/item-spec/json-schema/datetime.json"
+		  "$ref": "../../../item-spec/json-schema/datetime.json"
 		}
 	],
 	"definitions": {
@@ -51,21 +52,20 @@
 					],
 					"properties": {
 						"dlm:engine": {
-							"title": "Execution environement",
-							"description": "Describe the execution environement",
+							"title": "Execution environment",
+							"description": "Describe the execution environment",
 							"type": "object",
 							"required": [
 								"framework",
-								"version",
-								"docker"
+								"framework_version"
 							],
 							"properties": {
 								"framework": {
-									"title": "Name of the deep learning used",
+									"title": "Name of the DL framework used",
 									"type": "string"
 								},
-								"version": {
-									"title": "Version du framework",
+								"framework_version": {
+									"title": "Framework version",
 									"type": "string"
 								},
 								"model_handler": {
@@ -81,15 +81,22 @@
 									"type": "string"
 								},
 								"docker": {
-									"title": "Docker container specifications",
+									"title": "Docker runtime specifications",
 									"type": "object",
 									"properties": {
-										"docker_file": {
-											"title": "Docker file url",
-											"type": "string"
-										},
+										"docker_runtime": {
+                      "anyOf": [{
+                        "docker_file": {
+											    "title": "Docker file url",
+											    "type": "string"
+										     },
+                        "docker_image": {
+ 											    "title": "Docker image url",
+ 											    "type": "string"
+ 										    }}
+                      ]},
 										"gpu": {
-											"title": "Docker image requires a gpu",
+											"title": "Docker runtime requires a gpu",
 											"type": "boolean"
 										},
 
@@ -111,7 +118,7 @@
 										}
 									}
 								}
-							}	
+							}
 						},
 						"dlm:architecture": {
 							"title": "Model architecture description",
@@ -139,7 +146,7 @@
 									"title": "Pre-training",
 									"type": "string"
 								}
-							}	
+							}
 						},
 						"dlm:inputs": {
 							"title": "Description of the input tensor",
@@ -160,7 +167,7 @@
 								},
 								"scaling_factor": {
 									"title": "Scaling factor",
-									"description": "Scaling factor to be applied on the data in order to bring the dynamic between 0 and 1",
+									"description": "Scaling factor to be applied on the data in order to bring the range of values between 0 and 1",
 									"type": "number",
 									"exclusiveMinimum": 0
 								},
@@ -222,8 +229,8 @@
 										}
 									}
 								}
-								
-							}	
+
+							}
 						},
 						"dlm:outputs": {
 							"title": "Description of the outputs of the model",
@@ -290,7 +297,7 @@
 										}
 									}
 								}
-								
+
 							}
 						},
 						"dlm:data": {
@@ -439,5 +446,3 @@
 		}
 	}
 }
-
-	
