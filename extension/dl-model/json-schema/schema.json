@@ -1,5 +1,6 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://schemas.stacspec.org/v1.0.0-beta.2/extensions/dl-model/json-schema/schema.json#",
 	"title": "DL Model Item",
 	"description": "This object represents the metadata for a DL model item in a DL Catalog.",
 	"allOf": [
@@ -57,11 +58,12 @@
 							"required": [
 								"framework",
 								"version",
-								"docker"
+								"model_handler",
+								"model_src_url"
 							],
 							"properties": {
 								"framework": {
-									"title": "Name of the deep learning used",
+									"title": "Name of the deep learning framework used",
 									"type": "string"
 								},
 								"version": {
@@ -83,6 +85,10 @@
 								"docker": {
 									"title": "Docker container specifications",
 									"type": "object",
+									"anyOf": [
+										{"required": ["docker_file","gpu","working_dir","run"]},
+										{"required": ["image_name","gpu","working_dir","run"]}
+									],
 									"properties": {
 										"docker_file": {
 											"title": "Docker file url",
