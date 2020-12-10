@@ -44,14 +44,14 @@
 				"properties": {
 					"type": "object",
 					"required": [
-						"dlm:engine",
 						"dlm:inputs",
 						"dlm:outputs",
+						"dlm:runtime",
 						"dlm:archive",
 						"dlm:data"
 					],
 					"properties": {
-						"dlm:engine": {
+						"dlm:runtime": {
 							"title": "Execution environement",
 							"description": "Describe the execution environement",
 							"type": "object",
@@ -59,7 +59,8 @@
 								"framework",
 								"version",
 								"model_handler",
-								"model_src_url"
+								"model_src_url",
+								"requirement_file"
 							],
 							"properties": {
 								"framework": {
@@ -78,8 +79,12 @@
 									"title": "Model source repository",
 									"type": "string"
 								},
-								"model_src_hash": {
+								"model_commit_hash": {
 									"title": "Hash value for the Model source",
+									"type": "string"
+								},
+								"requirement_file": {
+									"title": "Requirement file",
 									"type": "string"
 								},
 								"docker": {
@@ -98,7 +103,6 @@
 											"title": "Docker image requires a gpu",
 											"type": "boolean"
 										},
-
 										"image_name": {
 											"title": "Docker image name",
 											"type": "string"
