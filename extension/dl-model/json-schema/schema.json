@@ -128,14 +128,19 @@
 							"description": "Describe the model architecture",
 							"type": "object",
 							"required": [
-								"nb_parameters",
+								"total_nb_parameters",
+								"estimated_total_size_mb",
 								"type",
 								"pretrained"
 							],
 							"properties": {
-								"nb_parameters": {
+								"total_nb_parameters": {
 									"title": "Total number of parameters",
 									"type": "integer"
+								},
+								"estimated_total_size_mb": {
+									"title": "Estimated memory size in MB",
+									"type": "number"
 								},
 								"type": {
 									"title": "Type of architecture",
