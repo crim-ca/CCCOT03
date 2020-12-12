@@ -338,6 +338,24 @@
 									"description": "Sometimes datasets have no data value, this value should be ignored",
 									"type": "number"
 								},
+								"item_examples": {
+									"title": "item examples",
+									"description": "Link to additional data records or stac items",
+									"type": "array",
+									"minItems": 1,
+									"items": {
+										"properties": {
+											"url": {
+												"title": "Link toward an item",
+												"type": "string"
+											},
+											"title": {
+												"title": "item description",
+												"type": "string"
+											}
+										}
+									}
+								},
 								"number_of_bands": {
 									"title": "number of bands",
 									"description": "Number of spectral bands expected by the model",
