@@ -161,7 +161,7 @@
 								"normalization:mean",
 								"normalization:std",
 								"selected_bands",
-								"shape"
+								"input_tensors"
 							],
 							"properties": {
 								"name": {
@@ -199,40 +199,41 @@
 										"type": "integer"
 									}
 								},
-								"shape": {
+								"pre_processing_function": {
+									"title": "Pre-processing function",
+									"description": "Pre-processing Python function transforming the EO data to a ML-ready tensor",
+									"type": "string"
+								},
+								"input_tensors": {
 									"title": "Shape of the input tensor",
-									"type": "object",
-									"description": "Describe the dimensions of the input tensor",
-									"required": [
-										"batch",
-										"dim",
-										"height",
-										"width"
-									],
-									"properties": {
-										"batch": {
-											"title": "Batch size",
-											"type": "integer",
-											"minimum": 1
-										},
-										"dim": {
-											"title": "Number of channels",
-											"type": "integer",
-											"minimum": 1
-										},
-										"height": {
-											"title": "Height",
-											"type": "integer",
-											"minimum": 1
-										},
-										"width": {
-											"title": "Width",
-											"type": "integer",
-											"minimum": 1
+									"description": "Describe the dimensions of the input tensors",
+									"type": "array",
+									"minItems": 1,
+									"items": {
+										"properties": {
+											"batch": {
+												"title": "Batch size",
+												"type": "integer",
+												"minimum": 1
+											},
+											"dim": {
+												"title": "Number of channels",
+												"type": "integer",
+												"minimum": 1
+											},
+											"height": {
+												"title": "Height",
+												"type": "integer",
+												"minimum": 1
+											},
+											"width": {
+												"title": "Width",
+												"type": "integer",
+												"minimum": 1
+											}
 										}
 									}
 								}
-								
 							}	
 						},
 						"dlm:outputs": {
