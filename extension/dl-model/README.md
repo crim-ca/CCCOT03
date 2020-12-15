@@ -33,9 +33,20 @@ This document explains the fields of the STAC Deep Learning Model (dlm) Extensio
 
 In addition, fields from the following extensions must be imported in the item:
 * the [Scientific Extension Specification](https://github.com/radiantearth/stac-spec/tree/v1.0.0-beta.2/extensions/scientific/README.md) to describe publications.
-* the [EO Extension Specification](https://github.com/radiantearth/stac-spec/tree/v1.0.0-beta.2/extensions/eo/README.md) to eo data.
+* the [EO Extension Specification](https://github.com/radiantearth/stac-spec/tree/v1.0.0-beta.2/extensions/eo/README.md) to describe eo data.
+* the [Version Extension Specification](https://github.com/radiantearth/stac-spec/tree/v1.0.0-beta.2/extensions/version/README.md) to define version tags.
 
 ### Data Object
+
+| Field Name     | Type                           | Description |
+| -------------- | ------------------------------ | ----------- |
+| process_ level       | enum | Data processing level (L0= raw, L4= ARD). The levels are described by an enum. Important parameter because it can impact the apparent variability of the data. |
+| dtype       | enum | Data type (uint8, uint16, etc.) enum based on numpy base types. Potentially important for data normalization and therefore pre-processing. |
+| nodata_value       | integer | 'no data' value, may be relevant if the network should ignore this value. |
+| number_of_bands       | integer | number of bands used by the model |
+| useful_bands       | \[[Outputs Object](#outputs-object)] | describes only the relevant bands for the model, based on the [eo:bands](https://github.com/radiantearth/stac-spec/blob/v1.0.0-beta.2/extensions/eo/README.md#band-object) object but indicates only the relevant bands. |
+
+
 
 ### Inputs Object
 
