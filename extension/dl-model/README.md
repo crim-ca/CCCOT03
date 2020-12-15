@@ -23,14 +23,14 @@ This document explains the fields of the STAC Deep Learning Model (dlm) Extensio
 
 | Field Name     | Type                           | Description |
 | -------------- | ------------------------------ | ----------- |
-| dlm:data       | \[[Data Object](#data-object)] | This describe the EO data compatible with the model. |
-| dlm:inputs       | \[[Inputs Object](#inputs-object)] | This describe the EO data compatible with the model . |
-| dlm:architecture       | \[[Architecture Object](#architecture-object)] | This describe the EO data compatible with the model. |
-| dlm:runtime       | \[[Runtime Object](#runtime-object)] | This describe the EO data compatible with the model. |
-| dlm:outputs       | \[[Outputs Object](#outputs-object)] | This describe the EO data compatible with the model. |
+| dlm:data       | \[[Data Object](#data-object)] | describes the EO data compatible with the model. |
+| dlm:inputs       | \[[Inputs Object](#inputs-object)] | describes the transformation between the EO data and the model inputs. |
+| dlm:architecture       | \[[Architecture Object](#architecture-object)] | describes the model architecture. |
+| dlm:runtime       | \[[Runtime Object](#runtime-object)] | describes the runtime environments to run the model (inference). |
+| dlm:outputs       | \[[Outputs Object](#outputs-object)] | describes the model output and how to interpret it. |
 
 In addition, fields from the following extensions must be imported in the item:
-* the [Scientific Extension Specification](https://github.com/radiantearth/stac-spec/tree/v1.0.0-beta.2/extensions/scientific/README.md) to describe publications.
+* the [Scientific Extension Specification](https://github.com/radiantearth/stac-spec/tree/v1.0.0-beta.2/extensions/scientific/README.md) to describe relevant publications.
 * the [EO Extension Specification](https://github.com/radiantearth/stac-spec/tree/v1.0.0-beta.2/extensions/eo/README.md) to describe eo data.
 * the [Version Extension Specification](https://github.com/radiantearth/stac-spec/tree/v1.0.0-beta.2/extensions/version/README.md) to define version tags.
 
@@ -43,7 +43,6 @@ In addition, fields from the following extensions must be imported in the item:
 | nodata_value       | integer | 'no data' value, may be relevant if the network should ignore this value. |
 | number_of_bands       | integer | number of bands used by the model |
 | useful_bands       | \[[Outputs Object](#outputs-object)] | describes only the relevant bands for the model, based on the [eo:bands](https://github.com/radiantearth/stac-spec/blob/v1.0.0-beta.2/extensions/eo/README.md#band-object) object but indicates only the relevant bands. |
-
 
 
 ### Inputs Object
