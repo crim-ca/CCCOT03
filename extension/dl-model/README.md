@@ -1,5 +1,3 @@
-This is simply a copy of the eo extension for now, to be modified later.
-
 # Deep Learning Model Extension Specification
 
 - **Title: Deep Learning Model**
