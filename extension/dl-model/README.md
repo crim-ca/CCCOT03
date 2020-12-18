@@ -49,21 +49,22 @@ In addition, fields from the following extensions must be imported in the item:
 
 | Field Name     | Type                           | Description |
 | -------------- | ------------------------------ | ----------- |
-| input_tensors       | \[[Tensor Object](#tensor-object)] | . |
-| scaling_factor      | number | . |
-| normalization:mean  | list   | . |
-| normalization:std   | list   | . |
-| selected_band       | list   | . |
-| pre_processing_function | string | . |
+| name      | string | Python name of the input variable. |
+| input_tensors       | \[[Tensor Object](#tensor-object)] | Shape of the input tensor ($N\times C\times H \times W$). |
+| scaling_factor      | number | Scaling factor to apply to get data within [0,1]. For instance `scaling_factor=0.004` for 8-bit data. |
+| normalization:mean  | list of numbers   | Mean vector value to be removed from the data. The vector size must be consistent with `input_tensors:dim` and `selected_bands`. |
+| normalization:std   | list of numbers   | Standard-deviation values used to normalize the data. The vector size must be consistent with `input_tensors:dim` and `selected_bands`. |
+| selected_band       | list of integers   | Specifies the bands selected from the data described in dlm:data. |
+| pre_processing_function | string | Defines a python pre-processing function (path and inputs should be specified). |
 
 #### Tensor Object
 
 | Field Name     | Type                           | Description |
 | -------------- | ------------------------------ | ----------- |
-| batch  | number | . |
-| dim    | number | . |
-| height | number | . |
-| width  | number | . |
+| batch  | number | Batch size dimension (must be > 0). |
+| dim    | number | Number of channels  (must be > 0). |
+| height | number | Height of the tensor (must be > 0). |
+| width  | number | Width of the tensor (must be > 0). |
 
 
 ### Architecture Object
