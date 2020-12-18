@@ -47,11 +47,68 @@ In addition, fields from the following extensions must be imported in the item:
 
 ### Inputs Object
 
+| Field Name     | Type                           | Description |
+| -------------- | ------------------------------ | ----------- |
+| input_tensors       | \[[Tensor Object](#tensor-object)] | . |
+| scaling_factor      | number | . |
+| normalization:mean  | list   | . |
+| normalization:std   | list   | . |
+| selected_band       | list   | . |
+| pre_processing_function | string | . |
+
+#### Tensor Object
+
+| Field Name     | Type                           | Description |
+| -------------- | ------------------------------ | ----------- |
+| batch  | number | . |
+| dim    | number | . |
+| height | number | . |
+| width  | number | . |
+
+
 ### Architecture Object
+
+| Field Name     | Type                           | Description |
+| -------------- | ------------------------------ | ----------- |
+| total_nb_parameters  | integer | . |
+| estimated_total_size_mb  | number | . |
+| summary  | string | . |
+| pretrained  | string | . |
+
 
 ### Runtime Object
 
+| Field Name     | Type                           | Description |
+| -------------- | ------------------------------ | ----------- |
+| framework  | string | . |
+| version  | string | . |
+| model_handler  | string | . |
+| model_src_url  | string | . |
+| model_commit_hash  | string | . |
+| model_handler  | string | . |
+| docker  | \[[Tensor Object](#docker-object)] | . |
+
+#### Docker Object
+
+| Field Name     | Type                           | Description |
+| -------------- | ------------------------------ | ----------- |
+| docker_file  | string | . |
+| image_name   | string | . |
+| tag          | string | . |
+| working_dir  | string | . |
+| run          | string | . |
+| gpu          | boolean | . |
+
 ### Outputs Object
+
+| Field Name     | Type                           | Description |
+| -------------- | ------------------------------ | ----------- |
+| task              | enum | . |
+| number_of_classes | integer | . |
+| final_layer_size  | list of integer | . |
+| class_name_mapping  | list | . |
+| dont_care_index     | integer | . |
+| post_processing_function     | string | . |
 
 ## Implementations
 
