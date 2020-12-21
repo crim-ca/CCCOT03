@@ -39,7 +39,7 @@ In addition, fields from the following extensions must be imported in the item:
 | Field Name     | Type                           | Description |
 | -------------- | ------------------------------ | ----------- |
 | process_ level       | enum | Data processing level (L0= raw, L4= ARD). The levels are described by an enum. Important parameter because it can impact the apparent variability of the data. |
-| dtype       | enum | Data type (uint8, uint16, etc.) enum based on numpy base types. Potentially important for data normalization and therefore pre-processing. |
+| dtype       | enum | Data type (`uint8`, `uint16`, etc.) enum based on numpy base types. Potentially important for data normalization and therefore pre-processing. |
 | nodata_value       | integer | 'no data' value, may be relevant if the network should ignore this value. |
 | number_of_bands       | integer | number of bands used by the model |
 | useful_bands       | \[[Outputs Object](#outputs-object)] | describes only the relevant bands for the model, based on the [eo:bands](https://github.com/radiantearth/stac-spec/blob/v1.0.0-beta.2/extensions/eo/README.md#band-object) object but indicates only the relevant bands. |
@@ -71,10 +71,11 @@ In addition, fields from the following extensions must be imported in the item:
 
 | Field Name     | Type                           | Description |
 | -------------- | ------------------------------ | ----------- |
-| total_nb_parameters  | integer | . |
-| estimated_total_size_mb  | number | . |
-| summary  | string | . |
-| pretrained  | string | . |
+| total_nb_parameters  | integer | Toral number of parameters. |
+| estimated_total_size_mb  | number | The equivalent memory size in MB. |
+| type  | string | Type of network (ex: ResNet-18). |
+| summary  | string | Summary of the layers, can be the ouput of `print(model)`. |
+| pretrained  | string | Indicates the source of the pretraining (ex: ImageNet). |
 
 
 ### Runtime Object
@@ -104,12 +105,12 @@ In addition, fields from the following extensions must be imported in the item:
 
 | Field Name     | Type                           | Description |
 | -------------- | ------------------------------ | ----------- |
-| task              | enum | . |
-| number_of_classes | integer | . |
-| final_layer_size  | list of integer | . |
-| class_name_mapping  | list | . |
-| dont_care_index     | integer | . |
-| post_processing_function     | string | . |
+| task              | enum | Specifies the Machine Learning task as one in the following list: regression, classification, semantic segmentation, object detection, instance segmentation, panoptic Segmentation. |
+| number_of_classes | integer | Number of classes. |
+| final_layer_size  | list of integers | Size of the output tensor as (NxCxHxW). |
+| class_name_mapping  | list | Mapping of the output index to a short class name, for each record we specify the index and the class name. |
+| dont_care_index     | integer | Some models are using a *do not  care* value which is ignored in the input data. This is an optional parameter. This is an optional parameter. |
+| post_processing_function     | string | Some models are using a complex post-processing that can be specified using a post processing function. The python package should be specified as well as the input and outputs type. For example:`my_python_module_name:my_proc_function(Tensor<BxCxHxW>) -> Tensor<Bx1xHxW>` |
 
 ## Implementations
 
