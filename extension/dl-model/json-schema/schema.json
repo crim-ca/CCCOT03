@@ -33,12 +33,20 @@
 			],
 			"properties": {
 				"stac_extensions": {
-					"type": "array",
-					"contains": {
-						"enum": [
-							"dl-model",
-							"https://example.com/dl-model/1.0/schema.json"
-						]
+					"type": "object",
+					"required": [
+					  "stac_extensions"
+					],
+					"properties": {
+					  	"stac_extensions": {
+							"type": "array",
+							"contains": {
+						  		"enum": [
+									"dl-model",
+									"https://schemas.stacspec.org/v1.0.0-beta.2/extensions/dl-model/json-schema/schema.json"
+								]
+							}
+						}
 					}
 				},
 				"properties": {
@@ -358,7 +366,7 @@
 								},
 								"number_of_bands": {
 									"title": "number of bands",
-									"description": "Number of spectral bands expected by the model",
+									"description": "Number of spectral bands expected in the eo data",
 									"type": "number",
 									"minimum": 1
 								},
@@ -418,26 +426,8 @@
 								},
 								"test_file": {
 									"title": "Test file",
-									"type": "object",
+									"type": "string",
 									"description": "this test file is a data sample",
-									"required": [
-										"filename",
-										"dim",
-										"height",
-										"width"
-									],
-									"properties": {
-										"filename": {
-											"title": "Test filename",
-											"type": "string",
-											"minimum": 1
-										},
-										"output": {
-											"title": "Number of channels",
-											"type": "integer",
-											"minimum": 1
-										}
-									}
 								}
 							}
 						},
