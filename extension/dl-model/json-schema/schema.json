@@ -1,6 +1,10 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
+<<<<<<< HEAD
   "$id": "https://schemas.stacspec.org/v1.0.0-beta.2/extensions/deep_learning_model/json-schema/schema.json#",
+=======
+	"$id": "https://schemas.stacspec.org/v1.0.0-beta.2/extensions/dl-model/json-schema/schema.json#",
+>>>>>>> d4ef35e35b13d9ab3b73da56586f80633eaabda6
 	"title": "DL Model Item",
 	"description": "This object represents the metadata for a Deep Learning (DL) model item in a DL Catalog.",
 	"allOf": [
@@ -33,24 +37,33 @@
 			],
 			"properties": {
 				"stac_extensions": {
-					"type": "array",
-					"contains": {
-						"enum": [
-							"dl-model",
-							"https://example.com/dl-model/1.0/schema.json"
-						]
+					"type": "object",
+					"required": [
+					  "stac_extensions"
+					],
+					"properties": {
+					  	"stac_extensions": {
+							"type": "array",
+							"contains": {
+						  		"enum": [
+									"dl-model",
+									"https://schemas.stacspec.org/v1.0.0-beta.2/extensions/dl-model/json-schema/schema.json"
+								]
+							}
+						}
 					}
 				},
 				"properties": {
 					"type": "object",
 					"required": [
-						"dlm:engine",
 						"dlm:inputs",
 						"dlm:outputs",
+						"dlm:runtime",
 						"dlm:archive",
 						"dlm:data"
 					],
 					"properties": {
+<<<<<<< HEAD
 						"dlm:engine": {
 							"title": "Execution environment",
 							"description": "Describe the execution environment",
@@ -62,6 +75,22 @@
 							"properties": {
 								"framework": {
 									"title": "Name of the DL framework used",
+=======
+						"dlm:runtime": {
+							"title": "Execution environement",
+							"description": "Describe the execution environement",
+							"type": "object",
+							"required": [
+								"framework",
+								"version",
+								"model_handler",
+								"model_src_url",
+								"requirement_file"
+							],
+							"properties": {
+								"framework": {
+									"title": "Name of the deep learning framework used",
+>>>>>>> d4ef35e35b13d9ab3b73da56586f80633eaabda6
 									"type": "string"
 								},
 								"framework_version": {
@@ -76,13 +105,21 @@
 									"title": "Model source repository",
 									"type": "string"
 								},
-								"model_src_hash": {
+								"model_commit_hash": {
 									"title": "Hash value for the Model source",
+									"type": "string"
+								},
+								"requirement_file": {
+									"title": "Requirement file",
 									"type": "string"
 								},
 								"docker": {
 									"title": "Docker runtime specifications",
 									"type": "object",
+									"anyOf": [
+										{"required": ["docker_file","gpu","working_dir","run"]},
+										{"required": ["image_name","gpu","working_dir","run"]}
+									],
 									"properties": {
 										"docker_runtime": {
                       "anyOf": [{
@@ -99,7 +136,6 @@
 											"title": "Docker runtime requires a gpu",
 											"type": "boolean"
 										},
-
 										"image_name": {
 											"title": "Docker image name",
 											"type": "string"
@@ -125,14 +161,19 @@
 							"description": "Describe the model architecture",
 							"type": "object",
 							"required": [
-								"nb_parameters",
+								"total_nb_parameters",
+								"estimated_total_size_mb",
 								"type",
 								"pretrained"
 							],
 							"properties": {
-								"nb_parameters": {
+								"total_nb_parameters": {
 									"title": "Total number of parameters",
 									"type": "integer"
+								},
+								"estimated_total_size_mb": {
+									"title": "Estimated memory size in MB",
+									"type": "number"
 								},
 								"type": {
 									"title": "Type of architecture",
@@ -158,7 +199,7 @@
 								"normalization:mean",
 								"normalization:std",
 								"selected_bands",
-								"shape"
+								"input_tensors"
 							],
 							"properties": {
 								"name": {
@@ -196,41 +237,47 @@
 										"type": "integer"
 									}
 								},
-								"shape": {
+								"pre_processing_function": {
+									"title": "Pre-processing function",
+									"description": "Pre-processing Python function transforming the EO data to a ML-ready tensor",
+									"type": "string"
+								},
+								"input_tensors": {
 									"title": "Shape of the input tensor",
-									"type": "object",
-									"description": "Describe the dimensions of the input tensor",
-									"required": [
-										"batch",
-										"dim",
-										"height",
-										"width"
-									],
-									"properties": {
-										"batch": {
-											"title": "Batch size",
-											"type": "integer",
-											"minimum": 1
-										},
-										"dim": {
-											"title": "Number of channels",
-											"type": "integer",
-											"minimum": 1
-										},
-										"height": {
-											"title": "Height",
-											"type": "integer",
-											"minimum": 1
-										},
-										"width": {
-											"title": "Width",
-											"type": "integer",
-											"minimum": 1
+									"description": "Describe the dimensions of the input tensors",
+									"type": "array",
+									"minItems": 1,
+									"items": {
+										"properties": {
+											"batch": {
+												"title": "Batch size",
+												"type": "integer",
+												"minimum": 1
+											},
+											"dim": {
+												"title": "Number of channels",
+												"type": "integer",
+												"minimum": 1
+											},
+											"height": {
+												"title": "Height",
+												"type": "integer",
+												"minimum": 1
+											},
+											"width": {
+												"title": "Width",
+												"type": "integer",
+												"minimum": 1
+											}
 										}
 									}
 								}
+<<<<<<< HEAD
 
 							}
+=======
+							}	
+>>>>>>> d4ef35e35b13d9ab3b73da56586f80633eaabda6
 						},
 						"dlm:outputs": {
 							"title": "Description of the outputs of the model",
@@ -329,9 +376,27 @@
 									"description": "Sometimes datasets have no data value, this value should be ignored",
 									"type": "number"
 								},
+								"item_examples": {
+									"title": "item examples",
+									"description": "Link to additional data records or stac items",
+									"type": "array",
+									"minItems": 1,
+									"items": {
+										"properties": {
+											"url": {
+												"title": "Link toward an item",
+												"type": "string"
+											},
+											"title": {
+												"title": "item description",
+												"type": "string"
+											}
+										}
+									}
+								},
 								"number_of_bands": {
 									"title": "number of bands",
-									"description": "Number of spectral bands expected by the model",
+									"description": "Number of spectral bands expected in the eo data",
 									"type": "number",
 									"minimum": 1
 								},
@@ -391,26 +456,8 @@
 								},
 								"test_file": {
 									"title": "Test file",
-									"type": "object",
+									"type": "string",
 									"description": "this test file is a data sample",
-									"required": [
-										"filename",
-										"dim",
-										"height",
-										"width"
-									],
-									"properties": {
-										"filename": {
-											"title": "Test filename",
-											"type": "string",
-											"minimum": 1
-										},
-										"output": {
-											"title": "Number of channels",
-											"type": "integer",
-											"minimum": 1
-										}
-									}
 								}
 							}
 						},

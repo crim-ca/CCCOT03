@@ -1,88 +1,119 @@
-This is simply a copy of the eo extension for now, to be modified later.
-
 # Deep Learning Model Extension Specification
 
 - **Title: Deep Learning Model**
 - **Identifier: dl-model**
-- **Field Name Prefix: none**
+- **Field Name Prefix: dlm**
 - **Scope: Item**
-- **Extension [Maturity Classification](../README.md#extension-maturity): Proposal**
+- **Extension [Maturity Classification](https://github.com/radiantearth/stac-spec/tree/v1.0.0-beta.2/extensions#extension-maturity): Proposal**
 
-This document explains the fields of the STAC Electro-Optical (EO) Extension to a STAC Item. EO
-data is considered to be data that represents a snapshot of the earth for a single date and time. It
-could consist of multiple spectral bands in any part of the electromagnetic spectrum. Examples of EO
-data include sensors with visible, short-wave and mid-wave IR bands (e.g., the OLI instrument on
-Landsat-8), long-wave IR bands (e.g. TIRS aboard Landsat-8).
+This document explains the fields of the STAC Deep Learning Model (dlm) Extension to a STAC Item. The main objective is to be able to build model collections that can be searched and that are containing enough information to be able to deploy an inference service. When Deep Learning models are trained using satellite imagery, it is important to track essential information if you want to make them searchable and reusable:
+1. The input data origin and specifications
+2. The model base transforms
+3. The model output and its semantic interpretation 
+4. The runtime environment to be able to run the model
+5. The scientific references
 
-If the data has been collected by a satellite, it is strongly recommended to use the [`sat` extension](../sat/README.md), which in turn requires the [Instrument Fields](../../item-spec/common-metadata.md#instrument). If the data has been collected on an airborne platform it is strongly recommended to use the [Instrument Fields](../../item-spec/common-metadata.md#instrument).
+![](https://i.imgur.com/cVAg5sA.png)
 
-For defining view geometry of data, it is strongly recommended to use the [`view` extension](../view/README.md).
 
 - Examples:
-  - [Landsat 8 with bands in assets](examples/example-landsat8.json)
-  - [Example with bands in Item properties](../../item-spec/examples/sample-full.json)
-  - [Landsat 8 with bands in Item Asset Definition and Collection Summaries](../item-assets/examples/example-landsat8.json)
-- [JSON Schema](json-schema/schema.json)
+  - [Example with a UNet trained with thelper](examples/example-thelper-item.json)
 
-## Item fields
+## Item Properties
 
 | Field Name     | Type                           | Description |
 | -------------- | ------------------------------ | ----------- |
-| eo:bands       | \[[Band Object](#band-object)] | This is a list of the available bands where each item is a [Band Object](#band-object). |
-| eo:cloud_cover | number                         | Estimate of cloud cover as a percentage (0-100) of the entire scene. If not available the field should not be provided. |
+| dlm:data       | \[[Data Object](#data-object)] | describes the EO data compatible with the model. |
+| dlm:inputs       | \[[Inputs Object](#inputs-object)] | describes the transformation between the EO data and the model inputs. |
+| dlm:architecture       | \[[Architecture Object](#architecture-object)] | describes the model architecture. |
+| dlm:runtime       | \[[Runtime Object](#runtime-object)] | describes the runtime environments to run the model (inference). |
+| dlm:outputs       | \[[Outputs Object](#outputs-object)] | describes the model output and how to interpret it. |
 
-**eo:bands**: In previous versions `eo:bands` was allowed to be used on the asset-level referencing via array indices to the actual bands in Item `properties`. Starting with STAC 1.0.0-beta.1 you are now allowed to place the full `eo:bands` array with all Band Object information in Item `assets` as described in general in the [STAC Item](../../item-spec/item-spec.md#additional-fields-for-assets).
+In addition, fields from the following extensions must be imported in the item:
+* the [Scientific Extension Specification](https://github.com/radiantearth/stac-spec/tree/v1.0.0-beta.2/extensions/scientific/README.md) to describe relevant publications.
+* the [EO Extension Specification](https://github.com/radiantearth/stac-spec/tree/v1.0.0-beta.2/extensions/eo/README.md) to describe eo data.
+* the [Version Extension Specification](https://github.com/radiantearth/stac-spec/tree/v1.0.0-beta.2/extensions/version/README.md) to define version tags.
 
-### Band Object
+### Data Object
 
-| Field Name          | Type   | Description |
-| ------------------- | ------ | ----------- |
-| name                | string | The name of the band (e.g., "B01", "B02", "B1", "B5", "QA"). |
-| common_name         | string | The name commonly used to refer to the band to make it easier to search for bands across instruments. See the [list of accepted common names](#common-band-names). |
-| description         | string | Description to fully explain the band. [CommonMark 0.29](http://commonmark.org/) syntax MAY be used for rich text representation. |
-| center_wavelength   | number | The center wavelength of the band, in micrometers (μm).      |
-| full_width_half_max | number | Full width at half maximum (FWHM). The width of the band, as measured at half the maximum transmission, in micrometers (μm). |
+| Field Name     | Type                           | Description |
+| -------------- | ------------------------------ | ----------- |
+| process_ level       | enum | Data processing level (L0= raw, L4= ARD). The levels are described by an enum. Important parameter because it can impact the apparent variability of the data. |
+| dtype       | enum | Data type (`uint8`, `uint16`, etc.) enum based on numpy base types. Potentially important for data normalization and therefore pre-processing. |
+| nodata_value       | integer | 'no data' value, may be relevant if the network should ignore this value. |
+| number_of_bands       | integer | number of bands used by the model |
+| useful_bands       | \[[Outputs Object](#outputs-object)] | describes only the relevant bands for the model, based on the [eo:bands](https://github.com/radiantearth/stac-spec/blob/v1.0.0-beta.2/extensions/eo/README.md#band-object) object but indicates only the relevant bands. |
 
-**full_width_half_max** (FWHM) is a common way to describe the size of a spectral band. It is the
-width, in micrometers (μm), of the bandpass measured at a half of the maximum transmission. Thus, if the
-maximum transmission of the bandpass was 80%, the FWHM is measured as the width of the bandpass at
-40% transmission.
 
-#### Common Band Names
+### Inputs Object
 
-The band's common_name is the name that is commonly used to refer to that band's spectral
-properties. The table below shows the common name based on the average band range for the band
-numbers of several popular instruments.
+| Field Name     | Type                           | Description |
+| -------------- | ------------------------------ | ----------- |
+| name      | string | Python name of the input variable. |
+| input_tensors       | \[[Tensor Object](#tensor-object)] | Shape of the input tensor ($N\times C\times H \times W$). |
+| scaling_factor      | number | Scaling factor to apply to get data within [0,1]. For instance `scaling_factor=0.004` for 8-bit data. |
+| normalization:mean  | list of numbers   | Mean vector value to be removed from the data. The vector size must be consistent with `input_tensors:dim` and `selected_bands`. |
+| normalization:std   | list of numbers   | Standard-deviation values used to normalize the data. The vector size must be consistent with `input_tensors:dim` and `selected_bands`. |
+| selected_band       | list of integers   | Specifies the bands selected from the data described in dlm:data. |
+| pre_processing_function | string | Defines a python pre-processing function (path and inputs should be specified). |
 
-| Common Name | Band Range (μm) | Landsat 5/7 | Landsat 8 | Sentinel 2 | MODIS |
-| ----------- | --------------- | ----------- | --------- | ---------- | ----- |
-| coastal     | 0.40 - 0.45     |             | 1         | 1          |       |
-| blue        | 0.45 - 0.50     | 1           | 2         | 2          | 3     |
-| green       | 0.50 - 0.60     | 2           | 3         | 3          | 4     |
-| red         | 0.60 - 0.70     | 3           | 4         | 4          | 1     |
-| yellow      | 0.58 - 0.62     |             |           |            |       |
-| pan         | 0.50 - 0.70     | 8 (*L7 only*) | 8       |            |       |
-| rededge     | 0.70 - 0.75     |             |           |            |       |
-| nir         | 0.75 - 1.00     | 4           |           | 8          | 2     |
-| nir08       | 0.75 - 0.90     |             | 5         | 8a         |       |
-| nir09       | 0.85 - 1.05     |             |           | 9          |       |
-| cirrus      | 1.35 - 1.40     |             | 9         | 10         | 26    |
-| swir16      | 1.55 - 1.75     | 5           | 6         | 11         | 6     |
-| swir22      | 2.10 - 2.30     | 7           | 7         | 12         | 7     |
-| lwir        | 10.5 - 12.5     | 6           |           |            |       |
-| lwir11      | 10.5 - 11.5     |             | 10        |            | 31    |
-| lwir12      | 11.5 - 12.5     |             | 11        |            | 32    |
+#### Tensor Object
 
-The difference between the `nir`, `nir08`, and `nir09` bands are that the `nir` band is a wider band that covers most of the spectral range of 0.75μm to 1.0μm. `nir08` and `nir09` are narrow bands centered 0.85μm and 0.95μm respectively. The same goes for the difference between `lwir`, `lwir11` and `lwir12`.
+| Field Name     | Type                           | Description |
+| -------------- | ------------------------------ | ----------- |
+| batch  | number | Batch size dimension (must be > 0). |
+| dim    | number | Number of channels  (must be > 0). |
+| height | number | Height of the tensor (must be > 0). |
+| width  | number | Width of the tensor (must be > 0). |
+
+
+### Architecture Object
+
+| Field Name     | Type                           | Description |
+| -------------- | ------------------------------ | ----------- |
+| total_nb_parameters  | integer | Toral number of parameters. |
+| estimated_total_size_mb  | number | The equivalent memory size in MB. |
+| type  | string | Type of network (ex: ResNet-18). |
+| summary  | string | Summary of the layers, can be the ouput of `print(model)`. |
+| pretrained  | string | Indicates the source of the pretraining (ex: ImageNet). |
+
+
+### Runtime Object
+
+| Field Name     | Type                           | Description |
+| -------------- | ------------------------------ | ----------- |
+| framework  | string | Used framework (ex: PyTorch, TensorFlow). |
+| version  | string | Framework version (some models require a specific version of the framework). |
+| model_handler  | string | Inference execution function. |
+| model_src_url  | string | Url of the source code (ex: GitHub repo). |
+| model_commit_hash  | string | Hash value pointing to a specific version of the code. |
+| docker  | \[[Tensor Object](#docker-object)] | Information for the deployment of the model in a docker instance. |
+
+#### Docker Object
+
+| Field Name     | Type                           | Description |
+| -------------- | ------------------------------ | ----------- |
+| docker_file  | string | Url of the docker file. |
+| image_name   | string | Name of the docker image. |
+| tag          | string | Tag of the image. |
+| working_dir  | string | Working directory in the instance that can be mapped. |
+| run          | string | Running command. |
+| gpu          | boolean | True if the docker image requires a GPU. |
+
+### Outputs Object
+
+| Field Name     | Type                           | Description |
+| -------------- | ------------------------------ | ----------- |
+| task              | enum | Specifies the Machine Learning task as one in the following list: regression, classification, semantic segmentation, object detection, instance segmentation, panoptic Segmentation. |
+| number_of_classes | integer | Number of classes. |
+| final_layer_size  | list of integers | Size of the output tensor as (NxCxHxW). |
+| class_name_mapping  | list | Mapping of the output index to a short class name, for each record we specify the index and the class name. |
+| dont_care_index     | integer | Some models are using a *do not  care* value which is ignored in the input data. This is an optional parameter. This is an optional parameter. |
+| post_processing_function     | string | Some models are using a complex post-processing that can be specified using a post processing function. The python package should be specified as well as the input and outputs type. For example:`my_python_module_name:my_processing_function(Tensor<BxCxHxW>) -> Tensor<Bx1xHxW>` |
 
 ## Implementations
 
-A number of implementations listed on [STAC Examples on stacspec.org](https://stacspec.org/#examples) are making use of the core EO properties, including the SpaceNet, CBERS, sat-api and Planet implementations. This is not marked as more mature because
-the eo:bands portion is still being fleshed out.
 
 ## Extensions
 
-The [extensions page](../README.md) gives an overview about related extensions. Of particular relevance to EO data:
 
-* the [Sat Extension Specification](../sat/README.md) to describe SAR data collected from a satellite.
-* the [View Geometry Extension Specification](../view/README.md) to describe angles of sensors collecting earth observation data from above the earth.
