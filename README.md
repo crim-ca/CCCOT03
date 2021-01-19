@@ -1,7 +1,7 @@
 # CCCOT03
 Repo for the CCCOT03 project
 
-Proposal for a STAC extension for Deep Learning models. 
+Proposal for a STAC extension for Deep Learning models. The full report is available [here](CCCOT03_Rapport Final_FINAL_EN.pdf).
 
 Note that this is a work in progress.
 
